@@ -1,0 +1,6 @@
+GET http://127.0.0.1:8080/movies?nome=matrix
+
+<> 2023-03-15T213633.200.json
+
+###
+
