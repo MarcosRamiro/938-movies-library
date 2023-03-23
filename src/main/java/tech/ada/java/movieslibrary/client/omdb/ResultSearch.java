@@ -1,4 +1,4 @@
-package tech.ada.java.movieslibrary.omdb;
+package tech.ada.java.movieslibrary.client.omdb;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

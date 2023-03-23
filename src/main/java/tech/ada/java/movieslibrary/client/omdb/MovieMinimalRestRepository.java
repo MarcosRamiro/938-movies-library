@@ -1,4 +1,4 @@
-package tech.ada.java.movieslibrary.omdb;
+package tech.ada.java.movieslibrary.client.omdb;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

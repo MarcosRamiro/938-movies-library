@@ -1,9 +1,8 @@
-package tech.ada.java.movieslibrary.omdb;
+package tech.ada.java.movieslibrary.client.omdb;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

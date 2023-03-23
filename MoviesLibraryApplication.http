@@ -1,4 +1,4 @@
-GET http://127.0.0.1:8080/movies?nome=matrix
+GET http://127.0.0.1:8080/movies?title=matrix
 
 <> 2023-03-15T213633.200.json
 
