@@ -1,10 +1,10 @@
-package tech.ada.java.movieslibrary.omdb.model;
+package tech.ada.java.movieslibrary.api.movie;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "movie")
+@Table(name = "tb_movie")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

@@ -1,7 +1,6 @@
-package tech.ada.java.movieslibrary.omdb.dto;
+package tech.ada.java.movieslibrary.api.movie;
 
 import lombok.Data;
-import tech.ada.java.movieslibrary.omdb.model.MovieModel;
 
 @Data
 public class MovieResponse {
