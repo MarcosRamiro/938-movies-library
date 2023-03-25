@@ -1,7 +1,8 @@
 package tech.ada.java.movieslibrary.api.movie;
 
 import java.util.List;
-import org.modelmapper.ModelMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,35 +17,34 @@ import tech.ada.java.movieslibrary.client.omdb.ResultSearch;
 
 @RestController
 @RequestMapping("/movies")
+@RequiredArgsConstructor
+@Log4j2
 public class MoviesRestController {
 
     private final MovieMinimalRestRepository restRepository;
     private final MovieJpaRespository movieJpaRespository;
-    private final ModelMapper modelMapper;
-
-    public MoviesRestController(
-        MovieMinimalRestRepository restRepository,
-        MovieJpaRespository movieJpaRespository, ModelMapper modelMapper) {
-        this.restRepository = restRepository;
-        this.movieJpaRespository = movieJpaRespository;
-        this.modelMapper = modelMapper;
-    }
 
     @GetMapping(value = "/external-search", params = "title")
     public ResultSearch buscar(@RequestParam String title) {
+        log.info("Consultado a API externa OMDB pelo título: {}", title);
         return this.restRepository.search(title);
     }
 
     @GetMapping("/external-search/{id}")
     public MovieDetails detalhes(@PathVariable String id) {
+        return getMovieDetails(id);
+    }
+
+    private MovieDetails getMovieDetails(String id) {
+        log.info("Consultado a API externa OMDB para detalhar o imdbId: {}", id);
         return this.restRepository.details(id);
     }
 
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public MovieResponse salvar(@PathVariable String id) {
-        MovieDetails movieDetails = this.restRepository.details(id);
-        MovieModel movie = this.modelMapper.map(movieDetails, MovieModel.class);
+        MovieDetails movieDetails = this.getMovieDetails(id);
+        MovieModel movie = MovieModel.from(movieDetails);
         movieJpaRespository.save(movie);
         return MovieResponse.of(movie);
     }

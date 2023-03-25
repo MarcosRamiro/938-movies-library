@@ -16,7 +16,7 @@ import lombok.ToString;
 public class UserRequest {
 
     @Pattern(regexp = "[\\w\\p{L}.]{5,20}")
-    private String username;
+    private String username;//a-zA-Zacentos0-9. tamanho de 5 a 20
     @Email
     private String email;
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$")

@@ -23,8 +23,17 @@ public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String username;
     private String email;
     private String password;
 
+    public static UserModel from(UserRequest userRequest) {
+        return new UserModel(userRequest.getUsername(), userRequest.getEmail(), userRequest.getPassword());
+    }
+
+    public UserModel(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }

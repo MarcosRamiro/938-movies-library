@@ -10,7 +10,7 @@ public class MovieResponse {
     private String genre;
     private String director;
     private String actors;
-    private Long year;
+    private Integer year;
 
     public static MovieResponse of(MovieModel model){
         MovieResponse response = new MovieResponse();
