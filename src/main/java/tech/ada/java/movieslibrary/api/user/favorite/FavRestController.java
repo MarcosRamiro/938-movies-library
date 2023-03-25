@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,20 +33,25 @@ public class FavRestController {
     public ResponseEntity<FavDTO> salvar(@PathVariable Long userId, @PathVariable Long movieId) {
         UserModel userModel = getUserModel(userId);
         MovieModel movieModel = this.movieJpaRespository.findById(movieId).orElseThrow();
-        Optional<FavDTO> favModelOptional = favJpaRepository.findByUserModelIdAndMovieModelId(userModel.getId(), movieModel.getId());
-        HttpStatus httpStatus;
+        Optional<FavModel> favModelOptional = favJpaRepository.findByUserModelIdAndMovieModelId(userModel.getId(), movieModel.getId());
         if (favModelOptional.isPresent()) {
-            httpStatus = HttpStatus.OK;
-        } else {
-            httpStatus = HttpStatus.CREATED;
+            return new ResponseEntity<>(this.convertToFavDTO(favModelOptional.get()), HttpStatus.OK);
         }
-        FavDTO favDTO = favModelOptional.orElseGet(() -> saveFavModel(userModel, movieModel));
-        return new ResponseEntity<>(favDTO, httpStatus);
+        FavModel favModel = this.favJpaRepository.save(new FavModel(movieModel, userModel));
+        return new ResponseEntity<>(this.convertToFavDTO(favModel), HttpStatus.CREATED);
     }
 
-    private FavDTO saveFavModel(UserModel userModel, MovieModel movieModel) {
-        FavModel favModel = this.favJpaRepository.save(new FavModel(movieModel, userModel));
-        return this.convertToFavDTO(favModel);
+    @DeleteMapping("/{movieId}")
+    public ResponseEntity<FavDTO> remover(@PathVariable Long userId, @PathVariable Long movieId) {
+        UserModel userModel = getUserModel(userId);
+        MovieModel movieModel = this.movieJpaRespository.findById(movieId).orElseThrow();
+        Optional<FavModel> optionalFavModel = this.favJpaRepository.findByUserModelIdAndMovieModelId(userModel.getId(),
+            movieModel.getId());
+        if (optionalFavModel.isPresent()) {
+            this.favJpaRepository.delete(optionalFavModel.get());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private FavDTO convertToFavDTO(FavModel favModel) {

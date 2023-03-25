@@ -23,6 +23,7 @@ public class MovieModel {
     private String actors;
     @Column( name = "year_film")
     private Integer year;
+    private Boolean available;
 
     public static MovieModel from(MovieDetails movieDetails) {
         return new MovieModel(movieDetails.getImdbID(), movieDetails.getTitle(), movieDetails.getGenre(),
@@ -36,6 +37,7 @@ public class MovieModel {
         this.director = director;
         this.actors = actors;
         this.year = year;
+        this.available = true;
     }
 
 
