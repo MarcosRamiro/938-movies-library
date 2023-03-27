@@ -1,16 +1,34 @@
 {
 	"info": {
-		"_postman_id": "d7181671-8e2e-4f2a-b82a-fb2aae972a9e",
+		"_postman_id": "93b3c0ce-bd91-4a53-9a0e-568a0a5fed03",
 		"name": "Movies",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "4613547"
+		"_exporter_id": "12072469"
 	},
 	"item": [
 		{
 			"name": "Admin Consultar filmes",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
 				},
 				"method": "GET",
 				"header": [
@@ -46,6 +64,16 @@
 		{
 			"name": "Admin Cadastrar filme",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"url": {
@@ -67,6 +95,16 @@
 		{
 			"name": "Admin Tornar filme indisponível",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [],
 				"url": {
@@ -89,8 +127,24 @@
 		{
 			"name": "Admin Listar filmes",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Barer ",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/admin/movies-manager",
 					"protocol": "http",
@@ -109,6 +163,16 @@
 		{
 			"name": "Admin Listar usuários",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -130,7 +194,14 @@
 			"name": "Listar filmes",
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
 				},
 				"method": "GET",
 				"header": [],
@@ -149,13 +220,61 @@
 			"response": []
 		},
 		{
-			"name": "Cadastrar usuário",
+			"name": "Cadastrar usuário Admin",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"jesse.haniel\",\n    \"email\": \"jesse.haniel@ada.tech\",\n    \"password\": \"D7e-kx;$7wQD5e\"\n}",
+					"raw": "{\n    \"username\": \"jesse.haniel\",\n    \"email\": \"jesse.haniel@ada.tech\",\n    \"password\": \"D7e-kx;$7wQD5e\",\n    \"role\": \"Admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar usuário",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"marcos.ramiro\",\n    \"email\": \"marcos@ramiro.com\",\n    \"password\": \"abc123456$R\",\n    \"role\": \"user\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -179,10 +298,20 @@
 		{
 			"name": "Adicionar filme favorito",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/1/favorites/1",
+					"raw": "http://localhost:8080/users/{{userId}}/favorites/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -190,7 +319,7 @@
 					"port": "8080",
 					"path": [
 						"users",
-						"1",
+						"{{userId}}",
 						"favorites",
 						"1"
 					]
@@ -201,10 +330,20 @@
 		{
 			"name": "Listar favoritos do usuário",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/1/favorites",
+					"raw": "http://localhost:8080/users/{{userId}}/favorites",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -212,7 +351,7 @@
 					"port": "8080",
 					"path": [
 						"users",
-						"1",
+						"{{userId}}",
 						"favorites"
 					]
 				}
@@ -222,10 +361,20 @@
 		{
 			"name": "Listar favoritos - projection",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/1/favorites/projection",
+					"raw": "http://localhost:8080/users/{{userId}}/favorites/projection",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -233,7 +382,7 @@
 					"port": "8080",
 					"path": [
 						"users",
-						"1",
+						"{{userId}}",
 						"favorites",
 						"projection"
 					]
@@ -244,10 +393,20 @@
 		{
 			"name": "Remover dos favoritos",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/1/favorites/1",
+					"raw": "http://localhost:8080/users/{{userId}}/favorites/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -255,7 +414,7 @@
 					"port": "8080",
 					"path": [
 						"users",
-						"1",
+						"{{userId}}",
 						"favorites",
 						"1"
 					]
@@ -265,37 +424,41 @@
 		},
 		{
 			"name": "Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"token\", jsonData.token);\r",
+							"postman.setEnvironmentVariable(\"userId\", jsonData.userId);\r",
+							"console.log(jsonData);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "username",
-							"value": "user",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "userPass",
-							"type": "text"
-						},
-						{
-							"key": "_csrf",
-							"value": "1005DB03D3897817CB8C126FA160D932",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"marcos.ramiro\",\r\n    \"password\":\"abc123456$R\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/login",
+					"raw": "http://localhost:8080/auth/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"auth",
 						"login"
 					]
 				}
@@ -304,37 +467,41 @@
 		},
 		{
 			"name": "Login Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"token\", jsonData.token);\r",
+							"postman.setEnvironmentVariable(\"userId\", jsonData.userId);\r",
+							"console.log(jsonData);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "username",
-							"value": "admin",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "adminPass",
-							"type": "text"
-						},
-						{
-							"key": "_csrf",
-							"value": "761130CD2D178E52A46FE859B77033BB",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"jesse.haniel\",\r\n    \"password\": \"D7e-kx;$7wQD5e\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/login",
+					"raw": "http://localhost:8080/auth/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"auth",
 						"login"
 					]
 				}
@@ -342,8 +509,18 @@
 			"response": []
 		},
 		{
-			"name": "Logout",
+			"name": "Logout - TODO: Tarefa de casa",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
