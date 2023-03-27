@@ -1,12 +1,12 @@
 package tech.ada.java.movieslibrary.api.user;
 
 import jakarta.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,28 +15,34 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
+@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 @Log4j2
 public class UserRestController {
 
     private final UserJpaRepository userJpaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO cadastrar(@RequestBody @Valid UserRequest userRequest) {
         Optional<UserModel> optionalUserModel = this.userJpaRepository.findByEmail(userRequest.getEmail());
         if (optionalUserModel.isPresent()) {
-            throw new DuplicatedEmailException("E-mail já cadastrado");
+            throw new DuplicatedException("E-mail já cadastrado");
         }
-        UserModel userModel = this.userJpaRepository.save(UserModel.from(userRequest));
+
+        UserModel user = UserModel.builder()
+                .email(userRequest.getEmail())
+                .username(userRequest.getUsername())
+                .role(Enum.valueOf(Role.class, userRequest.getRole().toUpperCase()))
+                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .build();
+
+        UserModel userModel = this.userJpaRepository.save(user);
+
         return new UserDTO(userModel);
+
     }
 
-    @GetMapping
-    public List<UserDTO> listar() {
-        return this.userJpaRepository.findAll().stream()
-            .map(it -> new UserDTO(it.getUsername(), it.getEmail()))
-            .toList();
-    }
 
 }
