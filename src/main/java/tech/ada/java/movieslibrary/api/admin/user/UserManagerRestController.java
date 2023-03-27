@@ -20,7 +20,7 @@ public class UserManagerRestController {
     @GetMapping
     public List<UserDTO> listar() {
         return this.userJpaRepository.findAll().stream()
-            .map(it -> new UserDTO(it.getUsername(), it.getEmail()))
+            .map(UserDTO::new)
             .toList();
     }
 
