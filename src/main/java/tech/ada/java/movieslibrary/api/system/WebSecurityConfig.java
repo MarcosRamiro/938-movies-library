@@ -49,14 +49,19 @@ public class WebSecurityConfig {
              .authorizeHttpRequests(requests ->
                      requests
                              .requestMatchers(PathRequest.toH2Console()).permitAll()
+
                              .requestMatchers(AUTH_ALLOWLIST).permitAll()
                              .anyRequest().authenticated()
              )
+             .headers().frameOptions().disable()
+             .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+
 
         return http.build();
     }
