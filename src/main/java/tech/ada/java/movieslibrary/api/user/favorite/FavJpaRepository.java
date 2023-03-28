@@ -16,11 +16,7 @@ public interface FavJpaRepository extends JpaRepository<FavModel, Long> {
     """)
     List<FavDTO> findByUserModelId(@Param("userModelId") Long userModelId);
 
-    @Query("""
-        select new tech.ada.java.movieslibrary.api.user.favorite.FavDTO(f.userModel, f.movieModel)
-        from FavModel f where f.userModel.id = :userModelId and f.movieModel.id = :movieModelId
-    """)
-    Optional<FavDTO> findByUserModelIdAndMovieModelId(@Param("userModelId") Long userModelId, @Param("movieModelId") Long movieModelId);
+    Optional<FavModel> findByUserModelIdAndMovieModelId(Long userModelId, Long movieModelId);
 
 
     @Query("""
