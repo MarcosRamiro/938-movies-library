@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,12 +16,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
-@Profile("security-custom-user")
+@Profile("security")
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
-//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true) //deprecated
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -44,24 +44,22 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-         http
+        http
             .csrf().disable()
-             .authorizeHttpRequests(requests ->
-                     requests
-                             .requestMatchers(PathRequest.toH2Console()).permitAll()
-
-                             .requestMatchers(AUTH_ALLOWLIST).permitAll()
-                             .anyRequest().authenticated()
-             )
-             .headers().frameOptions().disable()
-             .and()
+            .authorizeHttpRequests(requests ->
+                requests
+                    .requestMatchers(PathRequest.toH2Console()).permitAll()
+                    .requestMatchers(AUTH_ALLOWLIST).permitAll()
+                    .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .headers().frameOptions().disable()
+            .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-
 
         return http.build();
     }

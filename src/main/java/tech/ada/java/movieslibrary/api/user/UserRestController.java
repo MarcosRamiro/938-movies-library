@@ -34,7 +34,7 @@ public class UserRestController {
         UserModel user = UserModel.builder()
                 .email(userRequest.getEmail())
                 .username(userRequest.getUsername())
-                .role(Enum.valueOf(Role.class, userRequest.getRole().toUpperCase()))
+                .role(userRequest.getRole())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
                 .build();
 

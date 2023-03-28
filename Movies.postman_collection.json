@@ -236,7 +236,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"jesse.haniel\",\n    \"email\": \"jesse.haniel@ada.tech\",\n    \"password\": \"D7e-kx;$7wQD5e\",\n    \"role\": \"Admin\"\n}",
+					"raw": "{\n    \"username\": \"jesse.haniel\",\n    \"email\": \"jesse.haniel@ada.tech\",\n    \"password\": \"D7e-kx;$7wQD5e\",\n    \"role\": \"ADMIN\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
