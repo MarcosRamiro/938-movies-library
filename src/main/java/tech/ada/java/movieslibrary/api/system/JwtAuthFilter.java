@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import tech.ada.java.movieslibrary.api.auth.TokenBlocklistRepository;
 
 @Component
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final TokenBlocklistRepository tokenBlocklistRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,7 +42,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String username = this.jwtService.extractUsername(jwt);
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            if (this.jwtService.isTokenValid(jwt, userDetails)){
+            if (this.jwtService.isTokenValid(jwt, userDetails) && !tokenBlocklistRepository.existsByToken(jwt)){
                 this.setAuthTokenOnSecurityContext(request, userDetails);
             }
         }
