@@ -1,9 +1,7 @@
 package tech.ada.java.movieslibrary.api.auth;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import tech.ada.java.movieslibrary.api.system.JwtService;
 import tech.ada.java.movieslibrary.api.user.UserJpaRepository;
 import tech.ada.java.movieslibrary.api.user.UserModel;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -44,7 +43,5 @@ public class AuthenticationRestController {
         tokenBlocklistRepository.save(tokenModel);
 
     }
-
-
 
 }
