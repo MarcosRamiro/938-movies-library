@@ -14,6 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import feign.Response;
+import feign.Response.Body;
 import tech.ada.java.movieslibrary.api.auth.TokenBlocklistRepository;
 
 @Component
@@ -31,19 +34,28 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        final String jwt = header.substring(7);
-        this.authenticateUserFromToken(request, jwt);
+        final String token = header.substring(7);
+        this.authenticateUserFromToken(request, token);
         filterChain.doFilter(request, response);
     }
 
-    private void authenticateUserFromToken(HttpServletRequest request, String jwt) {
-        final String username = this.jwtService.extractUsername(jwt);
+    private void authenticateUserFromToken(HttpServletRequest request, String token) {
+        final String username = this.jwtService.extractUsername(token);
+
+        if(this.isTokenInBlockList(token)){
+            return;
+        }
+        
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            if (this.jwtService.isTokenValid(jwt, userDetails) && !tokenBlocklistRepository.existsByToken(jwt)){
+            if (this.jwtService.isTokenValid(token, userDetails)){
                 this.setAuthTokenOnSecurityContext(request, userDetails);
             }
         }
+    }
+
+    private boolean isTokenInBlockList(String token) {
+        return tokenBlocklistRepository.existsByToken(token);
     }
 
     private void setAuthTokenOnSecurityContext(HttpServletRequest request, UserDetails userDetails) {
