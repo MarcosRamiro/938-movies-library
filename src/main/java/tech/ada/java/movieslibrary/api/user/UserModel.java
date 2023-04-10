@@ -24,13 +24,17 @@ public class UserModel implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
 
     public UserModel(String username, String email, String password) {
         this.username = username;
@@ -74,6 +78,5 @@ public class UserModel implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 
 }
