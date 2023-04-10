@@ -2,7 +2,6 @@ package tech.ada.java.movieslibrary.api.user;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +18,6 @@ import java.util.List;
 @Setter
 @ToString
 @Builder
-@Log4j2
 public class UserModel implements UserDetails {
 
     @Id
@@ -42,7 +40,6 @@ public class UserModel implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        log.info("role.name(): " + role.name());
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
         return authorities;

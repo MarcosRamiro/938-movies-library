@@ -3,7 +3,6 @@ package tech.ada.java.movieslibrary.api.user.favorite;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +21,6 @@ import tech.ada.java.movieslibrary.api.user.UserModel;
 @RestController
 @RequestMapping("/users/{userId}/favorites")
 @RequiredArgsConstructor
-@Log4j2
 public class FavRestController {
 
     private final MovieJpaRespository movieJpaRespository;

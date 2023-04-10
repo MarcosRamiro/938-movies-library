@@ -15,8 +15,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import feign.Response;
-import feign.Response.Body;
 import tech.ada.java.movieslibrary.api.auth.TokenBlocklistRepository;
 
 @Component
@@ -63,6 +61,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
-
-
 }

@@ -3,7 +3,6 @@ package tech.ada.java.movieslibrary.api.user;
 import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
-@Log4j2
 public class UserRestController {
 
     private final UserJpaRepository userJpaRepository;
